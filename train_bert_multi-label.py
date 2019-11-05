@@ -58,8 +58,9 @@ def main(_):
     train_op = tf.contrib.layers.optimize_loss(loss, global_step=global_step, learning_rate=FLAGS.learning_rate,optimizer="Adam", clip_gradients=3.0)
 
     # 3. train the model by calling create model, get loss
-    gpu_config = tf.ConfigProto()
-    gpu_config.gpu_options.allow_growth = True
+    gpu_config = tf.ConfigProto(allow_soft_placement=True)
+
+    # gpu_config.gpu_options.allow_growth = True
     sess = tf.Session(config=gpu_config)
     sess.run(tf.global_variables_initializer())
     saver = tf.train.Saver()
@@ -203,14 +204,14 @@ def get_input_mask_segment_ids(train_x_batch,cls_id):
     segment_ids=np.ones((batch_size,max_sequence_length),dtype=np.int32)
     return input_mask, segment_ids,input_ids
 
-#train_x_batch=np.ones((3,5))
-#train_x_batch[0,4]=0
-#train_x_batch[1,3]=0
-#train_x_batch[1,4]=0
-#cls_id=2
-#print("train_x_batch:",train_x_batch)
-#input_mask, segment_ids,input_ids=get_input_mask_segment_ids(train_x_batch,cls_id)
-#print("input_mask:",input_mask, "segment_ids:",segment_ids,"input_ids:",input_ids)
-
+# train_x_batch=np.ones((3,5))
+# train_x_batch[0,4]=0
+# train_x_batch[1,3]=0
+# train_x_batch[1,4]=0
+# cls_id=2
+# print("train_x_batch:",train_x_batch)
+# input_mask, segment_ids,input_ids=get_input_mask_segment_ids(train_x_batch,cls_id)
+# print("input_mask:",input_mask, "segment_ids:",segment_ids,"input_ids:",input_ids)
+#
 if __name__ == "__main__":
     tf.app.run()
