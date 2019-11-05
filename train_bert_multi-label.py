@@ -58,7 +58,7 @@ def main(_):
     train_op = tf.contrib.layers.optimize_loss(loss, global_step=global_step, learning_rate=FLAGS.learning_rate,optimizer="Adam", clip_gradients=3.0)
 
     # 3. train the model by calling create model, get loss
-    gpu_config = tf.ConfigProto(allow_soft_placement=True, log_device_placement=False)
+    gpu_config = tf.ConfigProto(allow_soft_placement=False, log_device_placement=True)
 
     # gpu_config.gpu_options.allow_growth = True
     sess = tf.Session(config=gpu_config)
