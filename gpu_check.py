@@ -2,7 +2,7 @@ import tensorflow as tf
 from tensorflow.python.client import device_lib
 print(device_lib.list_local_devices())
 
-with tf.device('/gpu:0'):
+with tf.device('/XLA_GPU:0'):
     v1 = tf.constant([1.0, 2.0, 3.0], shape=[3], name='v1')
     v2 = tf.constant([1.0, 2.0, 3.0], shape=[3], name='v2')
     sumV = v1 + v2

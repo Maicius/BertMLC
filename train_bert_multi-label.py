@@ -77,7 +77,7 @@ def main(_):
             iteration = iteration + 1 ###
             input_mask_, segment_ids_, input_ids_=get_input_mask_segment_ids(trainX[start:end],cls_id) # input_ids_,input_mask_,segment_ids_
             feed_dict = {input_ids: input_ids_, input_mask: input_mask_, segment_ids:segment_ids_,
-                         label_ids:trainY[start:end],is_training:True}
+                         label_ids:trainY[start:end], is_training:True}
             curr_loss,_ = sess.run([loss,train_op], feed_dict)
             loss_total, counter = loss_total + curr_loss, counter + 1
             if counter % 30 == 0:
