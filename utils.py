@@ -27,7 +27,7 @@ def load_data(cache_file_h5py,cache_file_pickle):
     print("train_X.shape:",train_X.shape)
     train_Y=f_data['train_Y'] # np.array(
     print("train_Y.shape:",train_Y.shape,";")
-    vaild_X=f_data['vaild_X'] # np.array(
+    vaild_X=f_data['valid_X'] # np.array(
     valid_Y=f_data['valid_Y'] # np.array(
     test_X=f_data['test_X'] # np.array(
     test_Y=f_data['test_Y'] # np.array(

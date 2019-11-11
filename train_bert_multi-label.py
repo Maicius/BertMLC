@@ -14,8 +14,8 @@ import numpy as np
 from utils import load_data,init_label_dict,get_target_label_short,compute_confuse_matrix,compute_micro_macro,compute_confuse_matrix_batch,get_label_using_logits_batch,get_target_label_short_batch
 
 FLAGS=tf.app.flags.FLAGS
-tf.app.flags.DEFINE_string("cache_file_h5py","../data/ieee_zhihu_cup/data.h5","path of training/validation/test data.") #../data/sample_multiple_label.txt
-tf.app.flags.DEFINE_string("cache_file_pickle","../data/ieee_zhihu_cup/vocab_label.pik","path of vocabulary and label files") #../data/sample_multiple_label.txt
+tf.app.flags.DEFINE_string("cache_file_h5py","/home/maicius/cail_data/divorce/data.h5","path of training/validation/test data.") #../data/sample_multiple_label.txt
+tf.app.flags.DEFINE_string("cache_file_pickle","/home/maicius/cail_data/divorce/vocab_label.pik","path of vocabulary and label files") #../data/sample_multiple_label.txt
 
 tf.app.flags.DEFINE_float("learning_rate",0.0001,"learning rate")
 tf.app.flags.DEFINE_integer("batch_size", 256, "Batch size for training/evaluating.") #批处理的大小 32-->128
@@ -58,7 +58,7 @@ def main(_):
     train_op = tf.contrib.layers.optimize_loss(loss, global_step=global_step, learning_rate=FLAGS.learning_rate,optimizer="Adam", clip_gradients=3.0)
 
     # 3. train the model by calling create model, get loss
-    gpu_config = tf.ConfigProto(allow_soft_placement=False, log_device_placement=True)
+    gpu_config = tf.ConfigProto(allow_soft_placement=False, log_device_placement=False)
 
     # gpu_config.gpu_options.allow_growth = True
     sess = tf.Session(config=gpu_config)
@@ -78,7 +78,7 @@ def main(_):
             input_mask_, segment_ids_, input_ids_=get_input_mask_segment_ids(trainX[start:end],cls_id) # input_ids_,input_mask_,segment_ids_
             feed_dict = {input_ids: input_ids_, input_mask: input_mask_, segment_ids:segment_ids_,
                          label_ids:trainY[start:end], is_training:True}
-            curr_loss,_ = sess.run([loss,train_op], feed_dict)
+            curr_loss,_ = sess.run([loss, train_op], feed_dict)
             loss_total, counter = loss_total + curr_loss, counter + 1
             if counter % 30 == 0:
                 print(epoch,"\t",iteration,"\tloss:",loss_total/float(counter),"\tcurrent_loss:",curr_loss)
