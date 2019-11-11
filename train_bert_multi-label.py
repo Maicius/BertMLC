@@ -37,7 +37,7 @@ tf.app.flags.DEFINE_integer("max_seq_length",64,"max sequence length")
 def main(_):
     cache_file_h5py = '/home/maicius/cail_data/' + FLAGS.data_type + '/data.h5'
     cache_file_pickle = '/home/maicius/cail_data/' + FLAGS.data_type + '/vocab_label.pik'
-    model_path = 'model' + FLAGS.data_type +'/'
+    model_path = 'model_' + FLAGS.data_type +'/'
     # 1. get training data and vocabulary & labels dict
     word2index, label2index, trainX, trainY, vaildX, vaildY, testX, testY = load_data(cache_file_h5py,cache_file_pickle)
     vocab_size = len(word2index); print("bert model.vocab_size:", vocab_size)
@@ -100,7 +100,7 @@ def main(_):
                 except:
                     pass
             # evaulation
-            if start!=0 and start % (1000 * FLAGS.batch_size) == 0:
+            if start!=0 and iteration % 1000 == 0:
                 eval_loss, f1_score, f1_micro, f1_macro = do_eval(sess,input_ids,input_mask,segment_ids,label_ids,is_training,loss,
                                                                   probabilities,vaildX, vaildY, num_labels,batch_size,cls_id)
                 print("Epoch %d Validation Loss:%.3f\tF1 Score:%.3f\tF1_micro:%.3f\tF1_macro:%.3f" % (
@@ -110,6 +110,9 @@ def main(_):
                 save_path = model_path + "model.ckpt"
                 print("Going to save model..")
                 saver.save(sess, save_path, global_step=epoch)
+    save_path = model_path + "model.ckpt"
+    print("Going to save final model..")
+    saver.save(sess, save_path)
 
 def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,labels, num_labels, use_one_hot_embeddings,reuse_flag=False):
   """Creates a classification model."""
