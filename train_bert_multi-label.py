@@ -18,7 +18,7 @@ tf.app.flags.DEFINE_string("cache_file_h5py","/home/maicius/cail_data/divorce/da
 tf.app.flags.DEFINE_string("cache_file_pickle","/home/maicius/cail_data/divorce/vocab_label.pik","path of vocabulary and label files") #../data/sample_multiple_label.txt
 
 tf.app.flags.DEFINE_float("learning_rate",0.0001,"learning rate")
-tf.app.flags.DEFINE_integer("batch_size", 256, "Batch size for training/evaluating.") #批处理的大小 32-->128
+tf.app.flags.DEFINE_integer("batch_size", 64, "Batch size for training/evaluating.") #批处理的大小 32-->128
 tf.app.flags.DEFINE_string("ckpt_dir","checkpoint/","checkpoint location for the model")
 tf.app.flags.DEFINE_boolean("is_training",True,"is training.true:tranining,false:testing/inference")
 tf.app.flags.DEFINE_integer("num_epochs",15,"number of epochs to run.")
@@ -27,10 +27,10 @@ tf.app.flags.DEFINE_integer("num_epochs",15,"number of epochs to run.")
 # to train a big model,                     use hidden_size=768, num_hidden_layers=12, num_attention_heads=12, intermediate_size=3072
 # to train a middel size model, train fast. use hidden_size=128, num_hidden_layers=4, num_attention_heads=8, intermediate_size=1024
 tf.app.flags.DEFINE_integer("hidden_size",128,"hidden size") # 768
-tf.app.flags.DEFINE_integer("num_hidden_layers",2,"number of hidden layers") # 12--->4
-tf.app.flags.DEFINE_integer("num_attention_heads",4,"number of attention headers") # 12
-tf.app.flags.DEFINE_integer("intermediate_size",256,"intermediate size of hidden layer") # 3072-->512
-tf.app.flags.DEFINE_integer("max_seq_length",200,"max sequence length")
+tf.app.flags.DEFINE_integer("num_hidden_layers",4,"number of hidden layers") # 12--->4
+tf.app.flags.DEFINE_integer("num_attention_heads",8,"number of attention headers") # 12
+tf.app.flags.DEFINE_integer("intermediate_size",1024,"intermediate size of hidden layer") # 3072-->512
+tf.app.flags.DEFINE_integer("max_seq_length",64,"max sequence length")
 
 def main(_):
     # 1. get training data and vocabulary & labels dict
