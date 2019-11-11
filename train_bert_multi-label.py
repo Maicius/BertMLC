@@ -107,7 +107,7 @@ def main(_):
                     epoch, eval_loss, f1_score, f1_micro, f1_macro))
                 # save model to checkpoint
                 #if start % (4000 * FLAGS.batch_size)==0:
-                save_path = FLAGS.model_path + "model.ckpt"
+                save_path = model_path + "model.ckpt"
                 print("Going to save model..")
                 saver.save(sess, save_path, global_step=epoch)
 
