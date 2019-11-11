@@ -20,6 +20,8 @@ tf.app.flags.DEFINE_string("cache_file_pickle","/home/maicius/cail_data/divorce/
 tf.app.flags.DEFINE_float("learning_rate",0.0001,"learning rate")
 tf.app.flags.DEFINE_integer("batch_size", 64, "Batch size for training/evaluating.") #批处理的大小 32-->128
 tf.app.flags.DEFINE_string("ckpt_dir","checkpoint/","checkpoint location for the model")
+tf.app.flags.DEFINE_string("data_type","divorce/","checkpoint location for the model")
+tf.app.flags.DEFINE_string("model_path","model/","checkpoint location for the model")
 tf.app.flags.DEFINE_boolean("is_training",True,"is training.true:tranining,false:testing/inference")
 tf.app.flags.DEFINE_integer("num_epochs",15,"number of epochs to run.")
 
@@ -33,9 +35,17 @@ tf.app.flags.DEFINE_integer("intermediate_size",1024,"intermediate size of hidde
 tf.app.flags.DEFINE_integer("max_seq_length",64,"max sequence length")
 
 def main(_):
+    cache_file_h5py = '/home/maicius/cail_data/' + FLAGS.data_type + '/data.h5'
+    cache_file_pickle = '/home/maicius/cail_data/' + FLAGS.data_type + '/vocab_label.pik'
+    model_path = 'model' + FLAGS.data_type +'/'
     # 1. get training data and vocabulary & labels dict
-    word2index, label2index, trainX, trainY, vaildX, vaildY, testX, testY = load_data(FLAGS.cache_file_h5py,FLAGS.cache_file_pickle)
-    vocab_size = len(word2index); print("bert model.vocab_size:", vocab_size);
+    word2index, label2index, trainX, trainY, vaildX, vaildY, testX, testY = load_data(cache_file_h5py,cache_file_pickle)
+    vocab_size = len(word2index); print("bert model.vocab_size:", vocab_size)
+    def check_file_exist(path):
+        if not os.path.exists(path):
+            os.mkdir(path)
+    check_file_exist(model_path)
+
     num_labels = len(label2index); print("num_labels:", num_labels); cls_id=word2index['CLS'];print("id of 'CLS':",word2index['CLS'])
     num_examples, FLAGS.max_seq_length = trainX.shape;print("num_examples of training:", num_examples, ";max_seq_length:", FLAGS.max_seq_length)
 
@@ -97,7 +107,7 @@ def main(_):
                     epoch, eval_loss, f1_score, f1_micro, f1_macro))
                 # save model to checkpoint
                 #if start % (4000 * FLAGS.batch_size)==0:
-                save_path = FLAGS.ckpt_dir + "model.ckpt"
+                save_path = FLAGS.model_path + "model.ckpt"
                 print("Going to save model..")
                 saver.save(sess, save_path, global_step=epoch)
 
